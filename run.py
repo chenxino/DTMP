@@ -35,7 +35,7 @@ if __name__ == '__main__':
     parser.add_argument('--model', default='Anet', type=str)
     # train
     parser.add_argument('--loss_func', default='mae', type=str)
-    parser.add_argument('--seed', default=10, type=int)
+    parser.add_argument('--seed', default=2, type=int)
     parser.add_argument('--batch_size',type=int,default=64,help='batch size')
     parser.add_argument('--epochs',type=int,default=200,help='')
     parser.add_argument('--lr_init', default=0.003, type=float)
@@ -62,6 +62,8 @@ if __name__ == '__main__':
     parser.add_argument('--kernel_size',type=int,default=2,help='')
     parser.add_argument('--blocks',type=int,default=2,help='')
     parser.add_argument('--layers',type=int,default=3,help='')
+    parser.add_argument('--e_dim',type=int,default=10,help='node embedded dimensions')
+    parser.add_argument('--kernel_size_Agcn',type=int,default=2,help='')
 
     parser.add_argument('--dropout',type=float,default=0.3,help='dropout rate')
     parser.add_argument('--weight_decay',type=float,default=0.0001,help='weight decay rate')
@@ -98,11 +100,12 @@ if __name__ == '__main__':
     if args.model == 'Anet':
         model = Anet(device, args.num_nodes, args.dropout, aptinit=adjinit, 
         in_dim=args.in_dim, out_dim=args.seq_length, residual_channels=args.nhid, 
-        dilation_channels=args.nhid, skip_channels=args.nhid * 8, end_channels=args.nhid * 16, kernel_size=args.kernel_size,blocks=args.blocks,layers=args.layers)
+        dilation_channels=args.nhid, skip_channels=args.nhid * 8, end_channels=args.nhid * 16, kernel_size=args.kernel_size,blocks=args.blocks,layers=args.layers, e_dim=args.e_dim, kernel_size_Agcn = args.kernel_size_Agcn)
     else:
         raise ValueError
     model = model.to(device)
-    print_model_parameters(model, only_num=False)
+    # print_model_parameters(model, only_num=False)
+    
     #init loss function, optimizer
     if args.loss_func == 'mask_mae':
         loss = masked_mae_loss(scaler, mask_value=0.0)
