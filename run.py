@@ -35,7 +35,7 @@ if __name__ == '__main__':
     parser.add_argument('--model', default='Anet', type=str)
     # train
     parser.add_argument('--loss_func', default='mae', type=str)
-    parser.add_argument('--seed', default=2, type=int)
+    parser.add_argument('--seed', default=10, type=int)
     parser.add_argument('--batch_size',type=int,default=64,help='batch size')
     parser.add_argument('--epochs',type=int,default=200,help='')
     parser.add_argument('--lr_init', default=0.003, type=float)
