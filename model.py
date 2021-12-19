@@ -18,9 +18,9 @@ class Aconv(nn.Module):
         super(Aconv,self).__init__()
 
     def forward(self,x, A, shift):
-        Align_x = torch.roll(x, shift, dims=3) 
+        Align_x = torch.roll(x, shift, dims=2) 
         out = torch.zeros_like(x).to(x.device)
-        Align_x[...,:shift] = out[...,:shift]  
+        Align_x[...,:shift,:] = out[...,:shift,:]  
         x = torch.einsum('ncvl,vw->ncwl',(Align_x,A))
         return x.contiguous()
 
